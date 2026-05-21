@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subash M — Senior .NET Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #0a1628;
+        --navy2: #0f2040;
+        --blue: #1e4fc4;
+        --blue-light: #3b6ff5;
+        --accent: #4f9eff;
+        --accent2: #00d4ff;
+        --white: #f8faff;
+        --muted: #8a9ab8;
+        --border: rgba(255, 255, 255, 0.07);
+        --card: rgba(255, 255, 255, 0.04);
+        --card-hover: rgba(255, 255, 255, 0.07);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Instrument Sans", sans-serif;
+        background: var(--navy);
+        color: var(--white);
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* Custom cursor */
+      .cursor {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9999;
+        transition: transform 0.15s ease;
+      }
+      .cursor-ring {
+        width: 32px;
+        height: 32px;
+        border: 1px solid rgba(79, 158, 255, 0.5);
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 9998;
+        transition: all 0.12s ease;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 3px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--navy);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--blue);
+        border-radius: 2px;
+      }
+
+      /* NAV */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        padding: 1.25rem 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid transparent;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(0px);
+      }
+
+      nav.scrolled {
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(20px);
+        background: rgba(10, 22, 40, 0.85);
+      }
+
+      .nav-logo {
+        font-family: "Syne", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--white);
+        text-decoration: none;
+        letter-spacing: -0.5px;
+      }
+
+      .nav-logo span {
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--white);
+      }
+
+      .nav-cta {
+        padding: 0.5rem 1.25rem;
+        background: transparent;
+        border: 1px solid rgba(79, 158, 255, 0.4);
+        border-radius: 6px;
+        color: var(--accent) !important;
+        font-size: 0.82rem !important;
+        font-weight: 500 !important;
+        transition: all 0.2s !important;
+      }
+      .nav-cta:hover {
+        background: rgba(79, 158, 255, 0.1) !important;
+        color: var(--accent) !important;
+      }
+
+      /* HERO */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 8rem 4rem 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+            ellipse 60% 50% at 70% 50%,
+            rgba(30, 79, 196, 0.18) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 20% 80%,
+            rgba(0, 212, 255, 0.06) 0%,
+            transparent 60%
+          );
+      }
+
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(
+            rgba(79, 158, 255, 0.04) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(79, 158, 255, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(
+          ellipse 80% 80% at 50% 50%,
+          black,
+          transparent
+        );
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 700px;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.4rem 1rem;
+        background: rgba(79, 158, 255, 0.1);
+        border: 1px solid rgba(79, 158, 255, 0.2);
+        border-radius: 100px;
+        font-size: 0.78rem;
+        color: var(--accent);
+        font-family: "DM Mono", monospace;
+        font-weight: 400;
+        margin-bottom: 2rem;
+        letter-spacing: 0.3px;
+      }
+
+      .badge-dot {
+        width: 6px;
+        height: 6px;
+        background: #00d084;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
+        }
+      }
+
+      .hero h1 {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2.8rem, 5vw, 4.8rem);
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -1px;
+        margin-bottom: 1.5rem;
+        color: var(--white);
+        max-width: 900px;
+        word-break: break-word;
+      }
+
+      .hero h1 .line2 {
+        color: var(--accent);
+      }
+
+      .hero-sub {
+        font-size: 1.1rem;
+        color: var(--muted);
+        line-height: 1.75;
+        max-width: 560px;
+        margin-bottom: 2.5rem;
+        font-weight: 300;
+      }
+
+      .hero-sub strong {
+        color: var(--white);
+        font-weight: 500;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-primary {
+        padding: 0.85rem 2rem;
+        background: var(--blue-light);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        font-family: "Instrument Sans", sans-serif;
+        cursor: none;
+        text-decoration: none;
+        transition: all 0.2s;
+        letter-spacing: 0.2px;
+      }
+      .btn-primary:hover {
+        background: var(--accent);
+        transform: translateY(-1px);
+      }
+
+      .btn-ghost {
+        padding: 0.85rem 2rem;
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: "Instrument Sans", sans-serif;
+        cursor: none;
+        text-decoration: none;
+        transition: all 0.2s;
+      }
+      .btn-ghost:hover {
+        color: var(--white);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .hero-stats {
+        display: flex;
+        gap: 2.5rem;
+        margin-top: 4rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid var(--border);
+      }
+
+      .stat-num {
+        font-family: "Syne", sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--white);
+        letter-spacing: -1px;
+        line-height: 1;
+      }
+      .stat-num span {
+        color: var(--accent);
+      }
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 4px;
+        font-weight: 400;
+      }
+
+      /* SECTIONS */
+      section {
+        padding: 6rem 4rem;
+      }
+
+      .section-tag {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--accent);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+        display: block;
+      }
+
+      .section-title {
+        font-family: "Syne", sans-serif;
+        font-size: clamp(2rem, 3.5vw, 3rem);
+        font-weight: 800;
+        letter-spacing: -1px;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+      }
+
+      .section-sub {
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.7;
+        max-width: 520px;
+        font-weight: 300;
+        margin-bottom: 3.5rem;
+      }
+
+      /* ABOUT */
+      .about {
+        background: var(--navy2);
+      }
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+      }
+
+      .about-text p {
+        color: var(--muted);
+        line-height: 1.85;
+        font-size: 0.98rem;
+        margin-bottom: 1.25rem;
+        font-weight: 300;
+      }
+      .about-text p strong {
+        color: var(--white);
+        font-weight: 500;
+      }
+
+      .about-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .about-card {
+        padding: 1.25rem 1.5rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        transition: all 0.25s;
+      }
+      .about-card:hover {
+        background: var(--card-hover);
+        border-color: rgba(79, 158, 255, 0.2);
+        transform: translateX(4px);
+      }
+      .about-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(79, 158, 255, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .about-card-title {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--white);
+      }
+      .about-card-sub {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* SKILLS */
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .skill-card {
+        padding: 1.5rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        transition: all 0.25s;
+      }
+      .skill-card:hover {
+        background: var(--card-hover);
+        border-color: rgba(79, 158, 255, 0.2);
+        transform: translateY(-3px);
+      }
+
+      .skill-card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+
+      .skill-icon {
+        width: 36px;
+        height: 36px;
+        background: rgba(79, 158, 255, 0.12);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+      }
+
+      .skill-card-title {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--white);
+      }
+
+      .skill-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tag {
+        padding: 3px 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 100px;
+        font-size: 0.75rem;
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+        font-weight: 400;
+        transition: all 0.2s;
+      }
+      .skill-card:hover .tag {
+        border-color: rgba(79, 158, 255, 0.2);
+      }
+
+      /* EXPERIENCE */
+      .exp {
+        background: var(--navy2);
+      }
+      .exp-container {
+        max-width: 800px;
+      }
+
+      .exp-item {
+        display: grid;
+        grid-template-columns: 1px 1fr;
+        gap: 0 2.5rem;
+        margin-bottom: 0;
+      }
+
+      .exp-line {
+        width: 1px;
+        background: linear-gradient(to bottom, var(--blue-light), transparent);
+        position: relative;
+        margin-top: 6px;
+      }
+      .exp-line::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 10px;
+        height: 10px;
+        background: var(--blue-light);
+        border-radius: 50%;
+        border: 2px solid var(--navy2);
+      }
+
+      .exp-body {
+        padding-bottom: 3rem;
+      }
+
+      .exp-period {
+        font-family: "DM Mono", monospace;
+        font-size: 0.72rem;
+        color: var(--accent);
+        margin-bottom: 0.4rem;
+        letter-spacing: 0.5px;
+      }
+
+      .exp-role {
+        font-family: "Syne", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 0.25rem;
+      }
+
+      .exp-company {
+        font-size: 0.88rem;
+        color: var(--muted);
+        margin-bottom: 1.25rem;
+      }
+
+      .exp-points {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+      .exp-points li {
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.65;
+        padding-left: 16px;
+        position: relative;
+        font-weight: 300;
+      }
+      .exp-points li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 5px;
+        height: 1px;
+        background: var(--accent);
+      }
+      .exp-points li strong {
+        color: var(--white);
+        font-weight: 500;
+      }
+
+      /* PROJECTS */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .proj-card {
+        padding: 1.75rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .proj-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--blue), var(--accent2));
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      .proj-card:hover {
+        background: var(--card-hover);
+        border-color: rgba(79, 158, 255, 0.2);
+        transform: translateY(-4px);
+      }
+      .proj-card:hover::before {
+        opacity: 1;
+      }
+
+      .proj-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.75rem;
+      }
+
+      .proj-icon {
+        width: 42px;
+        height: 42px;
+        background: rgba(79, 158, 255, 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+
+      .proj-badge {
+        padding: 3px 10px;
+        background: rgba(0, 208, 132, 0.1);
+        border: 1px solid rgba(0, 208, 132, 0.2);
+        border-radius: 100px;
+        font-size: 0.7rem;
+        color: #00d084;
+        font-family: "DM Mono", monospace;
+      }
+
+      .proj-name {
+        font-family: "Syne", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.3px;
+      }
+
+      .proj-desc {
+        font-size: 0.86rem;
+        color: var(--muted);
+        line-height: 1.65;
+        margin-bottom: 1.25rem;
+        font-weight: 300;
+      }
+
+      .proj-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-bottom: 1.25rem;
+      }
+
+      .proj-metric {
+        font-family: "DM Mono", monospace;
+        font-size: 0.78rem;
+        color: var(--accent);
+        padding-top: 1rem;
+        border-top: 1px solid var(--border);
+      }
+
+      .proj-github {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 0.75rem;
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-decoration: none;
+        padding: 0.4rem 0.9rem;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        transition: all 0.2s;
+        font-family: "DM Mono", monospace;
+      }
+      .proj-github:hover {
+        color: var(--white);
+        border-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* CONTACT */
+      .contact {
+        background: var(--navy2);
+      }
+      .contact-inner {
+        max-width: 640px;
+      }
+
+      .contact-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 2.5rem;
+      }
+
+      .contact-card {
+        padding: 1.5rem;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        transition: all 0.25s;
+      }
+      .contact-card:hover {
+        background: var(--card-hover);
+        border-color: rgba(79, 158, 255, 0.2);
+        transform: translateY(-2px);
+      }
+      .contact-card-label {
+        font-size: 0.72rem;
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.4rem;
+      }
+      .contact-card-val {
+        font-size: 0.9rem;
+        color: var(--white);
+        font-weight: 500;
+      }
+
+      /* FOOTER */
+      footer {
+        padding: 2rem 4rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      footer p {
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      /* ANIMATIONS */
+      .fade-up {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .delay-1 {
+        transition-delay: 0.1s;
+      }
+      .delay-2 {
+        transition-delay: 0.2s;
+      }
+      .delay-3 {
+        transition-delay: 0.3s;
+      }
+
+      /* FLOATING ORBS */
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(80px);
+        animation: float 8s ease-in-out infinite;
+      }
+      .orb1 {
+        width: 500px;
+        height: 500px;
+        background: rgba(30, 79, 196, 0.12);
+        top: -100px;
+        right: -100px;
+        animation-delay: 0s;
+      }
+      .orb2 {
+        width: 350px;
+        height: 350px;
+        background: rgba(0, 212, 255, 0.06);
+        bottom: 20%;
+        left: -100px;
+        animation-delay: -4s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-30px) scale(1.05);
+        }
+      }
+      /* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+      @media (max-width: 1024px) {
+        .hero {
+          padding: 7rem 2rem 4rem;
+        }
+
+        section {
+          padding: 5rem 2rem;
+        }
+
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 3rem;
+        }
+
+        .contact-cards {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        nav {
+          padding: 1rem 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        body {
+          cursor: auto;
+        }
+
+        .cursor,
+        .cursor-ring,
+        .orb {
+          display: none;
+        }
+
+        nav {
+          padding: 1rem 1.2rem;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .nav-links {
+          gap: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .hero {
+          padding: 9rem 1.5rem 4rem;
+          min-height: auto;
+        }
+
+        .hero-content {
+          max-width: 100%;
+        }
+
+        .hero h1 {
+          font-size: clamp(2.2rem, 10vw, 4rem);
+          line-height: 1.15;
+          letter-spacing: -1px;
+        }
+
+        .hero-sub {
+          font-size: 0.95rem;
+          line-height: 1.7;
+          max-width: 100%;
+        }
+
+        .hero-actions {
+          flex-direction: column;
+          align-items: stretch;
+          width: 100%;
+        }
+
+        .btn-primary,
+        .btn-ghost {
+          width: 100%;
+          text-align: center;
+        }
+
+        .hero-stats {
+          flex-wrap: wrap;
+          gap: 1.5rem;
+        }
+
+        .stat-num {
+          font-size: 1.5rem;
+        }
+
+        section {
+          padding: 4rem 1.5rem;
+        }
+
+        .section-title {
+          line-height: 1.2;
+        }
+
+        .skills-grid,
+        .projects-grid,
+        .contact-cards,
+        .about-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .exp-item {
+          gap: 0 1.5rem;
+        }
+
+        footer {
+          padding: 2rem 1.5rem;
+          flex-direction: column;
+          gap: 0.8rem;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        .hero-badge {
+          font-size: 0.7rem;
+        }
+
+        .nav-links a {
+          font-size: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="ring"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <!-- NAV -->
+    <nav id="nav">
+      <a href="#" class="nav-logo">S<span>.</span>M</a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact" class="nav-cta">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Available for new opportunities
+        </div>
+        <h1>
+          Subash M<br />
+          <span class="line2">.NET Developer</span>
+        </h1>
+        <p class="hero-sub">
+          Building <strong>scalable healthcare automation systems</strong> with
+          C#, ASP.NET Core &amp; MySQL. 5+ years delivering tools that save
+          <strong>hundreds of hours</strong> monthly.
+        </p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">View Projects</a>
+
+          <a href="Subash_Resume_2026.pdf" download class="btn-ghost">
+            Download Resume
+          </a>
+
+          <a href="#contact" class="btn-ghost"> Get in touch → </a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="stat-num">12<span>+</span></div>
+            <div class="stat-label">Automation tools built</div>
+          </div>
+          <div>
+            <div class="stat-num">90<span>%</span></div>
+            <div class="stat-label">Manual effort reduced</div>
+          </div>
+          <div>
+            <div class="stat-num">5<span>+</span></div>
+            <div class="stat-label">Years experience</div>
+          </div>
+          <div>
+            <div class="stat-num">95<span>%</span></div>
+            <div class="stat-label">Code coverage maintained</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="about-grid">
+        <div class="about-text fade-up">
+          <span class="section-tag">// about me</span>
+          <h2 class="section-title">
+            Building things that<br />actually matter
+          </h2>
+          <p>
+            I'm a Senior .NET Developer based in
+            <strong>Chennai, Tamil Nadu</strong>, specialising in healthcare IT
+            automation. I've spent the last 5+ years at Acurus Solutions turning
+            painful manual processes into smooth, automated systems.
+          </p>
+          <p>
+            My philosophy is simple — code should solve real problems at scale.
+            Every tool I build is measured by hours saved and errors eliminated,
+            not just lines written.
+          </p>
+          <p>
+            Currently exploring a
+            <strong>Senior Developer role at a product-based company</strong>
+            where I can apply my backend expertise to a larger product scope.
+          </p>
+        </div>
+        <div class="about-cards fade-up delay-2">
+          <div class="about-card">
+            <div class="about-icon">⚡</div>
+            <div>
+              <div class="about-card-title">Healthcare IT Automation</div>
+              <div class="about-card-sub">
+                12+ tools built at Acurus Solutions
+              </div>
+            </div>
+          </div>
+          <div class="about-card">
+            <div class="about-icon">🔧</div>
+            <div>
+              <div class="about-card-title">Full SDLC Ownership</div>
+              <div class="about-card-sub">
+                Architecture to deployment, end-to-end
+              </div>
+            </div>
+          </div>
+          <div class="about-card">
+            <div class="about-icon">☁️</div>
+            <div>
+              <div class="about-card-title">Azure & DevOps</div>
+              <div class="about-card-sub">
+                CI/CD pipelines, Azure App Service
+              </div>
+            </div>
+          </div>
+          <div class="about-card">
+            <div class="about-icon">📊</div>
+            <div>
+              <div class="about-card-title">Agile / Scrum</div>
+              <div class="about-card-sub">
+                Sprint planning, code reviews, GitLab
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <span class="section-tag">// technical skills</span>
+      <h2 class="section-title fade-up">What I work with</h2>
+      <p class="section-sub fade-up delay-1">
+        A focused stack built around backend automation, APIs, and data.
+      </p>
+      <div class="skills-grid">
+        <div class="skill-card fade-up">
+          <div class="skill-card-header">
+            <div class="skill-icon">💻</div>
+            <span class="skill-card-title">Languages</span>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">C#</span>
+            <span class="tag">VB.NET</span>
+            <span class="tag">Python</span>
+          </div>
+        </div>
+        <div class="skill-card fade-up delay-1">
+          <div class="skill-card-header">
+            <div class="skill-icon">⚙️</div>
+            <span class="skill-card-title">Frameworks</span>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">.NET Core 6/7</span>
+            <span class="tag">ASP.NET Core</span>
+            <span class="tag">Web API</span>
+            <span class="tag">WinForms</span>
+            <span class="tag">Entity Framework</span>
+          </div>
+        </div>
+        <div class="skill-card fade-up delay-2">
+          <div class="skill-card-header">
+            <div class="skill-icon">🗄️</div>
+            <span class="skill-card-title">Database</span>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">MySQL</span>
+            <span class="tag">Stored Procs</span>
+            <span class="tag">LINQ</span>
+            <span class="tag">Query Tuning</span>
+          </div>
+        </div>
+        <div class="skill-card fade-up">
+          <div class="skill-card-header">
+            <div class="skill-icon">🧪</div>
+            <span class="skill-card-title">Testing & API</span>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">Selenium</span>
+            <span class="tag">NUnit</span>
+            <span class="tag">xUnit</span>
+            <span class="tag">Postman</span>
+            <span class="tag">Swagger</span>
+          </div>
+        </div>
+        <div class="skill-card fade-up delay-1">
+          <div class="skill-card-header">
+            <div class="skill-icon">☁️</div>
+            <span class="skill-card-title">Cloud & DevOps</span>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">Azure App Service</span>
+            <span class="tag">Azure DevOps</span>
+            <span class="tag">GitHub</span>
+            <span class="tag">GitLab</span>
+            <span class="tag">CI/CD</span>
+            <span class="tag">Jira</span>
+          </div>
+        </div>
+        <div class="skill-card fade-up delay-2">
+          <div class="skill-card-header">
+            <div class="skill-icon">🏗️</div>
+            <span class="skill-card-title">Architecture</span>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">SOLID</span>
+            <span class="tag">Microservices</span>
+            <span class="tag">REST API</span>
+            <span class="tag">Repository Pattern</span>
+            <span class="tag">DI</span>
+            <span class="tag">Async/Await</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="exp" id="experience">
+      <span class="section-tag">// work experience</span>
+      <h2 class="section-title fade-up">Where I've worked</h2>
+      <p class="section-sub fade-up delay-1">
+        5+ years of full-time engineering at Acurus Solutions.
+      </p>
+      <div class="exp-container">
+        <div class="exp-item fade-up delay-2">
+          <div class="exp-line"></div>
+          <div class="exp-body">
+            <div class="exp-period">Jan 2021 — Present · 5+ Years</div>
+            <div class="exp-role">Software Developer</div>
+            <div class="exp-company">
+              Acurus Solutions (Healthcare IT) · Chennai, Tamil Nadu
+            </div>
+            <ul class="exp-points">
+              <li>
+                Architected and delivered
+                <strong>12+ automation tools</strong> reducing manual workload
+                by <strong>70–90%</strong>, saving hundreds of hours monthly.
+              </li>
+              <li>
+                Improved patient data-entry efficiency by
+                <strong>50–65%</strong> via optimised WinForms UI; cut reporting
+                cycle time by <strong>60–75%</strong>.
+              </li>
+              <li>
+                Designed and deployed production-grade
+                <strong>RESTful APIs</strong> with ASP.NET Core Web API +
+                Swagger documentation.
+              </li>
+              <li>
+                Maintained <strong>95%+ test coverage</strong> with NUnit/xUnit;
+                zero critical regression defects across quarterly releases.
+              </li>
+              <li>
+                Reduced senior-developer dependency by
+                <strong>40%</strong> through proactive module ownership and
+                documentation.
+              </li>
+              <li>
+                Led Agile/Scrum sprints; managed CI/CD pipelines and code
+                reviews across GitHub and GitLab.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <span class="section-tag">// projects</span>
+      <h2 class="section-title fade-up">Things I've built</h2>
+      <p class="section-sub fade-up delay-1">
+        Healthcare automation tools shipped to production — GitHub links coming
+        soon.
+      </p>
+      <div class="projects-grid">
+        <div class="proj-card fade-up">
+          <div class="proj-header">
+            <div class="proj-icon">⚡</div>
+            <span class="proj-badge">2022–2023</span>
+          </div>
+          <div class="proj-name">Batch Automation System</div>
+          <div class="proj-desc">
+            End-to-end batch processing automation that replaced a manual 2-hour
+            workflow with a 40-minute automated pipeline across healthcare
+            teams.
+          </div>
+          <div class="proj-stack">
+            <span class="tag">C#</span><span class="tag">.NET Core 6</span
+            ><span class="tag">MySQL</span><span class="tag">WinForms</span>
+          </div>
+          <div class="proj-metric">
+            ↑ 3× faster · 85–90% manual effort eliminated
+          </div>
+          <a href="#" class="proj-github">⬡ GitHub — coming soon</a>
+        </div>
+
+        <div class="proj-card fade-up delay-1">
+          <div class="proj-header">
+            <div class="proj-icon">🏥</div>
+            <span class="proj-badge">2021–2022</span>
+          </div>
+          <div class="proj-name">HIM – PALISADES</div>
+          <div class="proj-desc">
+            Patient management system handling 10,000+ records with optimised
+            data retrieval and a significant reduction in support escalations.
+          </div>
+          <div class="proj-stack">
+            <span class="tag">C#</span><span class="tag">VB.NET</span
+            ><span class="tag">MySQL</span>
+          </div>
+          <div class="proj-metric">
+            ↑ 70% faster retrieval · 40% fewer support tickets
+          </div>
+          <a href="#" class="proj-github">⬡ GitHub — coming soon</a>
+        </div>
+
+        <div class="proj-card fade-up delay-2">
+          <div class="proj-header">
+            <div class="proj-icon">📦</div>
+            <span class="proj-badge">2023</span>
+          </div>
+          <div class="proj-name">Shipment Generation Tool</div>
+          <div class="proj-desc">
+            Automated file-generation pipeline that compressed a 45–60 minute
+            manual process down to under 5 minutes with near-perfect accuracy.
+          </div>
+          <div class="proj-stack">
+            <span class="tag">.NET</span><span class="tag">VB.NET</span
+            ><span class="tag">MySQL</span>
+          </div>
+          <div class="proj-metric">
+            ↑ 45–60 min → under 5 min · 98% accuracy
+          </div>
+          <a href="#" class="proj-github">⬡ GitHub — coming soon</a>
+        </div>
+
+        <div class="proj-card fade-up">
+          <div class="proj-header">
+            <div class="proj-icon">📊</div>
+            <span class="proj-badge">2023–2024</span>
+          </div>
+          <div class="proj-name">RCM Health Plan Report Generator</div>
+          <div class="proj-desc">
+            Automated Excel report generation for revenue cycle management — 90%
+            faster turnaround and measurably improved accuracy.
+          </div>
+          <div class="proj-stack">
+            <span class="tag">VB.NET</span><span class="tag">MySQL</span
+            ><span class="tag">Excel Automation</span>
+          </div>
+          <div class="proj-metric">
+            ↑ 90% faster · 30–35% accuracy improvement
+          </div>
+          <a href="#" class="proj-github">⬡ GitHub — coming soon</a>
+        </div>
+
+        <div class="proj-card fade-up delay-1">
+          <div class="proj-header">
+            <div class="proj-icon">💬</div>
+            <span class="proj-badge">2024</span>
+          </div>
+          <div class="proj-name">Text Request Automation</div>
+          <div class="proj-desc">
+            Selenium-driven outreach automation that eliminated all manual
+            messaging effort and reduced communication turnaround to near zero.
+          </div>
+          <div class="proj-stack">
+            <span class="tag">C#</span
+            ><span class="tag">Selenium WebDriver</span>
+          </div>
+          <div class="proj-metric">↑ 100% manual effort eliminated</div>
+          <a href="#" class="proj-github">⬡ GitHub — coming soon</a>
+        </div>
+
+        <div class="proj-card fade-up delay-2">
+          <div class="proj-header">
+            <div class="proj-icon">🤖</div>
+            <span class="proj-badge">2024</span>
+          </div>
+          <div class="proj-name">Telegram Attendance Bot</div>
+          <div class="proj-desc">
+            Automated Keka biometric monitoring that instantly pushes
+            check-in/out alerts via Telegram — zero manual tracking required.
+          </div>
+          <div class="proj-stack">
+            <span class="tag">C#</span><span class="tag">Selenium</span
+            ><span class="tag">Telegram Bot API</span>
+          </div>
+          <div class="proj-metric">↑ Real-time alerts · Zero manual effort</div>
+          <a href="#" class="proj-github">⬡ GitHub — coming soon</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="contact-inner">
+        <span class="section-tag">// contact</span>
+        <h2 class="section-title fade-up">Let's work together</h2>
+        <p class="section-sub fade-up delay-1">
+          Open to Senior .NET Developer roles at product-based companies.
+          Available with a 60-day notice period.
+        </p>
+        <div class="hero-actions fade-up delay-2">
+          <a href="mailto:msubash45678@gmail.com" class="btn-primary"
+            >Send an email</a
+          >
+          <a
+            href="https://www.linkedin.com/in/subash-m-0a62a0214"
+            target="_blank"
+            class="btn-ghost"
+            >LinkedIn →</a
+          >
+        </div>
+        <div class="contact-cards fade-up delay-2">
+          <div class="contact-card">
+            <div class="contact-card-label">EMAIL</div>
+            <div class="contact-card-val">msubash45678@gmail.com</div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-label">PHONE</div>
+            <div class="contact-card-val">+91-86678 56955</div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-label">LOCATION</div>
+            <div class="contact-card-val">Chennai, Tamil Nadu</div>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-label">AVAILABILITY</div>
+            <div class="contact-card-val">60-day notice</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>© 2025 Subash M — Built with care</p>
+      <p>Senior .NET Developer · Chennai</p>
+    </footer>
+
+    <script>
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("ring");
+      let mx = 0,
+        my = 0,
+        rx = 0,
+        ry = 0;
+
+      document.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+      });
+
+      function lerpRing() {
+        rx += (mx - rx) * 0.35;
+        ry += (my - ry) * 0.35;
+        ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+        requestAnimationFrame(lerpRing);
+      }
+      lerpRing();
+
+      document.querySelectorAll("a, button").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+          cursor.style.transform += " scale(2)";
+          ring.style.opacity = "0";
+        });
+        el.addEventListener("mouseleave", () => {
+          ring.style.opacity = "1";
+        });
+      });
+
+      const nav = document.getElementById("nav");
+      window.addEventListener("scroll", () => {
+        nav.classList.toggle("scrolled", window.scrollY > 40);
+      });
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      document
+        .querySelectorAll(".fade-up")
+        .forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
